@@ -7,7 +7,7 @@ import (
 )
 
 type Printer struct {
-	out    io.Writer
+	out    io.WriteSeeker
 	prefix string
 }
 
@@ -46,7 +46,7 @@ func (self *Printer) Dedent() {
 	}
 }
 
-func NewPrinter(out io.Writer) *Printer {
+func NewPrinter(out io.WriteSeeker) *Printer {
 	self := new(Printer)
 	self.out = out
 	return self

@@ -23,6 +23,16 @@ func BuildJsonReporter() Reporter {
 		NewGoTestReporter(),
 		NewJsonReporter(out))
 }
+func BuildXmlReporter(xmlFileName string) Reporter {
+	file, err := os.Create(xmlFileName)
+	if err != nil {
+		panic(err)
+	}
+	out := NewPrinter(file)
+	return NewReporters(
+		NewGoTestReporter(),
+		NewXmlReporter(out))
+}
 func BuildDotReporter() Reporter {
 	out := NewPrinter(NewConsole())
 	return NewReporters(

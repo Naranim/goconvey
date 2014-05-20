@@ -17,6 +17,7 @@ func declareFlags() {
 	flag.BoolVar(&json, "json", false, "When true, emits results in JSON blocks. Default: 'false'")
 	flag.BoolVar(&silent, "silent", false, "When true, all output from GoConvey is suppressed.")
 	flag.BoolVar(&story, "story", false, "When true, emits story output, otherwise emits dot output. When not provided, this flag mirros the value of the '-test.v' flag")
+	flag.StringVar(&xmlFileName, "xml", "", "When set, provides XML output to defined file")
 
 	if noStoryFlagProvided() {
 		story = verboseEnabled
@@ -39,6 +40,8 @@ func buildReporter() reporting.Reporter {
 		return reporting.BuildSilentReporter()
 	case story:
 		return reporting.BuildStoryReporter()
+	case len(xmlFileName) > 0:
+		return reporting.BuildXmlReporter(xmlFileName)
 	default:
 		return reporting.BuildDotReporter()
 	}
@@ -52,9 +55,10 @@ var (
 )
 
 var (
-	json   bool
-	silent bool
-	story  bool
+	json        bool
+	silent      bool
+	story       bool
+	xmlFileName string
 
 	verboseEnabled = flagFound("-test.v=true")
 	storyDisabled  = flagFound("-story=false")
